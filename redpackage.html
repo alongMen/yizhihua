@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<!-- <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"> -->
+	<title>Document</title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		.fl {
+			float: left;
+		}
+		.fr {
+			float: right;
+		}
+		img {
+			width: 220px;
+			height: 420px;
+		}
+		.redpackage {
+			width: 1200px;
+			margin: 0 auto;
+		}
+		.redpackage h2 {
+			padding-top: 100px;
+			text-align: center;
+			color: red;
+		}
+		.fa {
+			padding: 30px;
+			border-bottom: 2px solid red;
+		}
+		.kai {
+			padding-top: 30px;
+		}
+		.kai li {
+			cursor: pointer;
+			list-style: none;
+			float: left;
+			margin-right: 20px;
+			position: relative;
+		}
+		.yizhihua {
+			position: absolute;
+			left: 85px;
+			top: 43px;
+			width: 75px;
+			height: 75px;
+			border-radius: 50%;
+		}
+		.fa #sum,.fa #num {
+			width: 150px;
+			height: 20px;
+			border: 2px solid orange; 
+		}
+		.fa #btn {
+			width: 60px;
+			height: 25px;
+			background-color: red;
+			color: #fff;
+		}
+		#btn {cursor: pointer;}
+		.redpackage .money {
+			position: absolute;
+			left: 73px;
+    		top: 247px;
+			width: 80px;
+			height: 25px;
+			color: yellow;
+			font-size: 18px;
+			text-align: center;
+			font-weight: 700;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="redpackage">
+		<h2>黑马第一骚气专属红包</h2>
+		<div class="fa">
+			<p style="color: red;font-size: 18px;padding-bottom: 5px;font-weight: 700;">请输入红包：</p>
+			<input type="text" id="sum" placeholder="请输入红包：单位元" onKeyUp="value=value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')"/> 元
+			<input type="text" id="num" placeholder="请输入红包个数" onKeyUp="value=value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')"/> 个
+			<input type="button" value="确定" id="btn">
+		</div>
+		<div class="kai">
+			<ul id="ul">
+				<!-- <li><img src="fa.jpg"><img src="yizhihua.jpg" class="yizhihua"></li>
+				<li><img src="kai.jpg"><span class="money">5.20 元</span></li> -->
+			</ul>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var sumTxt = document.getElementById('sum');
+	    var numTxt = document.getElementById('num');
+	    var ul = document.getElementById('ul');
+
+	    var oBtn = document.getElementById('btn');
+	    function isnull(val) {
+
+	        var str = val.replace(/(^\s*)|(\s*$)/g, '');//去除空格;
+
+	        if (str == '' || str == undefined || str == null) {
+	            alert('请输入正确人民币！');
+	        } else {
+	            if((str*100)%100 != 0 && str <= 0){
+	                alert('请输入正确人民币！');
+	            } else {
+	                return str;
+	            }
+	        }
+	    }
+
+	    oBtn.onclick = function () {
+
+	      var sum = isnull( sumTxt.value );
+	      var num = isnull( numTxt.value );
+	      console.log(sum,num);
+	      getMoney(sum,num);
+
+	      var lis = document.getElementsByTagName('li');
+	      for(var i=0;i<num;i++){
+	      	lis[i].onclick = function (){
+	      // 		str = '<li><img src="kai.jpg"><span class="money">'+ money +' 元</span></li>';
+	      // '<li><img src="fa.jpg"><img src="yizhihua.jpg" class="yizhihua"><span class="money">'+ money +' 元</span></li>'
+	      		this.children[0].src = 'kai.jpg';
+	      		this.children[1].style = 'display:none';
+	      		this.children[2].style = 'display:block';
+	      		
+	      	}
+	      }
+	    }
+
+		function getMoney(sum,num){
+			var money;
+			var arr =[];
+			var sum1 = 0;
+			var str1 = '';
+			
+			for (var i=0;i<num;i++){
+				if(i===(num-1)){
+					money = sum.toFixed(2);
+				}else {
+					money =(Math.random()*sum/(num-i)*2) .toFixed(2);
+				}
+				if(money < 0.01){
+					money = 0.01;
+				}
+				sum = sum - money;
+				if(i<(num-1)){
+					arr.push(money);
+					sum1 += arr[i];
+					str1 += '<li><img src="fa.jpg"><img src="yizhihua.jpg" class="yizhihua"><span class="money">'+ money +' 元</span></li>';
+					// str += '<li><img src="kai.jpg"><span class="money">'+ money +' 元</span></li>';
+					console.log("第"+i+"位："+money+"元");
+				}else {
+					if((sum - sum1)*100%100 == 0){
+						money = sum - sum1;
+					}
+					str1 += '<li><img src="fa.jpg"><img src="yizhihua.jpg" class="yizhihua"><span class="money">'+ money +' 元</span></li>';
+					// str += '<li><img src="kai.jpg"><span class="money">'+ money +' 元</span></li>';
+					console.log("第"+i+"位："+money+"元");
+				}
+			}
+
+			ul.innerHTML = str1;
+    	}
+
+
+/*
+随机红包.html:27 第0位： 7.76元
+随机红包.html:27 第1位：+8.55元
+随机红包.html:27 第2位：+13.61元
+随机红包.html:27 第3位：+0.58元
+随机红包.html:27 第4位：+17.41元
+随机红包.html:27 第5位：+3.79元
+随机红包.html:27 第6位：+15.06元
+随机红包.html:27 第7位：+6.35元
+随机红包.html:27 第8位：+20.06元
+随机红包.html:32 第9位：+6.83元
+*/
+	</script>
+</body>
+</html>
